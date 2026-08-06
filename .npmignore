@@ -1,0 +1,7 @@
+# npm packs the whitelist in package.json's `files` field ("dist"). This file exists so the
+# packing rules are never inherited from .gitignore — which ignores dist/, the one directory
+# that MUST ship.
+src/
+scripts/
+preview/
+tsconfig.json

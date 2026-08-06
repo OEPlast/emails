@@ -1,0 +1,44 @@
+{{> head title="Payment failed"}}
+
+<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">We could not process your payment</h1>
+
+<p style="margin:0 0 16px 0; font-size:15px; line-height:24px; color:#475467;">
+  Hi {{greetingName firstName}}, the payment of <strong style="color:#1B1B1B;">{{currency amount}}</strong> for order
+  <strong style="color:#1B1B1B;">{{orderNumber}}</strong> did not go through, so the order has not been placed.
+</p>
+
+<table class="panel-warn" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#fff6ed; border:1px solid #fddcab; border-radius:12px; margin-bottom:20px;">
+  <tr>
+    <td style="padding:18px 20px;">
+      <p style="margin:0 0 8px 0; font-size:14px; line-height:22px; color:#7a4a12;"><strong>No money has left your account.</strong> If you see a pending charge, your bank will release it automatically.</p>
+      {{#if reason}}<p style="margin:0; font-size:14px; line-height:22px; color:#7a4a12;">Reason given by the payment provider: {{reason}}</p>{{/if}}
+    </td>
+  </tr>
+</table>
+
+{{#if expiresInMinutes}}
+<p style="margin:0 0 16px 0; font-size:15px; line-height:24px; color:#475467;">
+  We are holding your items for another <strong style="color:#1B1B1B;">{{expiresInMinutes}} minutes</strong>. After that they go back on sale.
+</p>
+{{/if}}
+
+{{> button href=retryPaymentLink label="Try payment again"}}
+
+<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin-top:20px;">
+  <tr>
+    <td style="padding:18px 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        {{> kv label="Order number" value=orderNumber}}
+        {{> kv label="Amount" value=(currency amount)}}
+        {{#if paymentMethod}}{{> kv label="Attempted with" value=paymentMethod}}{{/if}}
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
+  Payment failing repeatedly? Try a different card or bank, or contact
+  <a href="mailto:{{brand.supportEmail}}" style="color:#6f9420; text-decoration:none;">{{brand.supportEmail}}</a>.
+</p>
+
+{{> foot}}

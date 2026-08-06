@@ -1,0 +1,35 @@
+{{> head title="Delivery attempt failed"}}
+
+<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">We could not complete your delivery</h1>
+
+<p style="margin:0 0 16px 0; font-size:15px; line-height:24px; color:#475467;">
+  Hi {{greetingName firstName}}, a delivery attempt for order <strong style="color:#1B1B1B;">{{orderNumber}}</strong> was unsuccessful.
+  Your items are safe with us — we just need to confirm where to bring them.
+</p>
+
+<table class="panel-warn" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#fff6ed; border:1px solid #fddcab; border-radius:12px; margin-bottom:20px;">
+  <tr>
+    <td style="padding:18px 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        {{#if reason}}{{> kv label="What happened" value=reason}}{{/if}}
+        {{#if courierName}}{{> kv label="Courier" value=courierName}}{{/if}}
+        {{#if trackingNumber}}{{> kv label="Tracking number" value=trackingNumber}}{{/if}}
+        {{#if deliveryAddress}}{{> kv label="Address tried" value=deliveryAddress}}{{/if}}
+      </table>
+    </td>
+  </tr>
+</table>
+
+<h2 style="margin:0 0 10px 0; font-size:17px; line-height:24px; font-weight:700; color:#1B1B1B;">What to do next</h2>
+<p style="margin:0 0 8px 0; font-size:14px; line-height:22px; color:#475467;">1. Check the delivery address and phone number on your order are correct.</p>
+<p style="margin:0 0 8px 0; font-size:14px; line-height:22px; color:#475467;">2. Update them if anything has changed.</p>
+<p style="margin:0 0 20px 0; font-size:14px; line-height:22px; color:#475467;">3. Tell us a better time and we will arrange another attempt.</p>
+
+{{> button href=manageOrderLink label="Check my delivery details"}}
+
+<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
+  Prefer to talk it through? <a href="{{supportLink}}" style="color:#6f9420; text-decoration:none;">Contact support</a>
+  or email <a href="mailto:{{brand.supportEmail}}" style="color:#6f9420; text-decoration:none;">{{brand.supportEmail}}</a>, quoting order {{orderNumber}}.
+</p>
+
+{{> foot}}

@@ -1,0 +1,115 @@
+{{!--
+  Document head + outer shell + brand header.
+  Every template opens with {{> head title="…"}} and closes with {{> foot}}.
+
+  Layout notes:
+   - mobile-first: base rules are the phone layout, `@media (min-width: 600px)` widens them.
+     The old templates mixed a max-width:600 system (`sm-*`) with a min-width:600 one
+     (`_sm-*`) in the same file, which fought each other.
+   - the container carries width:100% AND max-width, so it fills a narrow viewport instead
+     of shrink-to-fit.
+   - `color-scheme: light dark` is backed by real prefers-color-scheme overrides. It was
+     declared before with nothing behind it.
+--}}<!DOCTYPE html>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>{{title}}</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <style>
+    td,th,div,p,a,h1,h2,h3,h4,h5,h6 { font-family: "Segoe UI", Arial, sans-serif; mso-line-height-rule: exactly; }
+    table { border-collapse: collapse; }
+  </style>
+  <![endif]-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="screen">
+  <style>
+    :root { color-scheme: light dark; supported-color-schemes: light dark; }
+
+    body, table, td, div, p, a, h1, h2, h3 {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+    body { margin: 0; padding: 0; width: 100% !important; word-break: break-word; -webkit-font-smoothing: antialiased; }
+    table { border-collapse: collapse; }
+    img { border: 0; outline: none; line-height: 100%; max-width: 100%; height: auto; vertical-align: middle; }
+    a { color: #6f9420; text-decoration: none; }
+
+    /* --- Layout ------------------------------------------------------- */
+    .wrap { width: 100%; background-color: #f2f4f7; }
+    .container { width: 100%; max-width: 640px; }
+    .card { background-color: #ffffff; }
+    .pad { padding: 20px; }          /* phone */
+    .pad-y { padding-top: 20px; padding-bottom: 20px; }
+    .rule { height: 1px; line-height: 1px; font-size: 0; background-color: #e4e7ec; }
+
+    /* Label/value rows: stacked on a phone, two columns on anything wider. */
+    .kv-label { display: block; width: 100%; padding: 0 0 2px 0; font-size: 13px; font-weight: 500; color: #667085; }
+    .kv-value { display: block; width: 100%; padding: 0 0 14px 0; font-size: 14px; font-weight: 600; color: #1B1B1B; text-align: left; }
+
+    /* --- Type --------------------------------------------------------- */
+    h1 { margin: 0 0 12px 0; font-size: 24px; line-height: 32px; font-weight: 700; color: #1B1B1B; }
+    h2 { margin: 0 0 12px 0; font-size: 17px; line-height: 24px; font-weight: 700; color: #1B1B1B; }
+    h3 { margin: 0; font-size: 14px; line-height: 20px; font-weight: 600; color: #1B1B1B; }
+    p  { margin: 0 0 12px 0; font-size: 15px; line-height: 24px; color: #475467; }
+    p.small { font-size: 13px; line-height: 20px; color: #667085; }
+    .muted { color: #667085; }
+    .strong-figure { font-size: 20px; line-height: 28px; font-weight: 700; color: #1B1B1B; }
+
+    /* --- Components --------------------------------------------------- */
+    .btn { display: block; border-radius: 10px; background-color: #6f9420; padding: 14px 20px; text-align: center; font-size: 16px; font-weight: 600; color: #ffffff !important; }
+    .panel { background-color: #f8fafc; border: 1px solid #e4e7ec; border-radius: 12px; }
+    .panel-accent { background-color: #f4f8ea; border: 1px solid #dbe8bd; border-radius: 12px; }
+    .panel-warn { background-color: #fff6ed; border: 1px solid #fddcab; border-radius: 12px; }
+    .code { font-family: "SF Mono", Consolas, Menlo, monospace; font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: 8px; color: #1B1B1B; }
+    .footer { background-color: #1B1B1B; color: #cfd3d8; }
+    .footer a { color: #a9cf5c; }
+
+    @media (min-width: 600px) {
+      .pad { padding: 32px !important; }
+      .kv-label { display: table-cell !important; width: auto !important; padding: 0 12px 12px 0 !important; }
+      .kv-value { display: table-cell !important; width: auto !important; padding: 0 0 12px 0 !important; text-align: right !important; }
+      h1 { font-size: 28px !important; line-height: 38px !important; }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .wrap   { background-color: #0f1113 !important; }
+      .card   { background-color: #1a1d21 !important; }
+      .rule   { background-color: #2f353b !important; }
+      h1, h2, h3, .kv-value, .strong-figure, .code { color: #e8eaed !important; }
+      p, .muted, .kv-label { color: #a1a5ab !important; }
+      .panel        { background-color: #212529 !important; border-color: #333940 !important; }
+      .panel-accent { background-color: #222a17 !important; border-color: #3f5220 !important; }
+      .panel-warn   { background-color: #2b2116 !important; border-color: #5a4222 !important; }
+      .footer { background-color: #000000 !important; }
+      .dark-invert-logo { filter: brightness(0) invert(1); }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#f2f4f7;">
+  {{!-- Inbox preview text, followed by zero-width joiners so the client does not pull body copy in after it. --}}
+  <div style="display:none; font-size:1px; color:#f2f4f7; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden;">
+    {{preheader}}
+    &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+  </div>
+
+  <div role="article" aria-roledescription="email" aria-label="{{title}}" lang="en" style="font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
+    <table class="wrap" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f2f4f7;">
+      <tr>
+        <td align="center" style="padding: 24px 12px;">
+          <table class="container" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="width:100%; max-width:640px;">
+
+            {{> header}}
+
+            <tr>
+              <td class="card pad" style="background-color:#ffffff; padding:20px;">

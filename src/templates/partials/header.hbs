@@ -1,0 +1,19 @@
+{{!--
+  Brand header.
+
+  Replaces the empty, malformed `<table><tr>…</tr></table>` (with a stray closing </tr> and
+  no content at all) that sat at the top of all twelve original templates — which is why the
+  logo only ever appeared in the footer, and why event-bus mail, which never injected
+  logoUrl, had no brand mark anywhere.
+--}}
+<tr>
+  <td class="card" align="center" style="background-color:#ffffff; padding:24px 20px 8px 20px;">
+    <a href="{{links.storefront}}" style="text-decoration:none;">
+      {{#if brand.logoUrl}}
+        <img class="dark-invert-logo" src="{{brand.logoUrl}}" alt="{{brand.storeName}}" width="132" style="display:block; max-height:44px; width:auto; max-width:200px;">
+      {{else}}
+        <span style="font-size:24px; font-weight:700; color:#1B1B1B; letter-spacing:-0.4px;">{{brand.storeName}}</span>
+      {{/if}}
+    </a>
+  </td>
+</tr>

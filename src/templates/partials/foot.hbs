@@ -1,0 +1,79 @@
+{{!--
+  Closes the content cell and renders the shared footer.
+
+  Differences from the footer this replaces:
+   - social icons come from Settings and are omitted entirely when unset, instead of three
+     hardcoded icons all pointing at href="#";
+   - the unsubscribe / preferences links are real URLs, and only appear on marketing mail —
+     a transactional receipt must not offer an opt-out;
+   - the store's postal address is present (CAN-SPAM / bulk-sender requirement);
+   - the layout is a stacked table. The old one used display:flex on a <tr>, which no major
+     email client honours, so the "responsive" reflow never actually happened.
+--}}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="footer" style="background-color:#1B1B1B; padding:24px 20px;">
+                <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td align="center" style="padding-bottom:14px;">
+                      <span style="font-size:16px; font-weight:700; color:#ffffff;">{{brand.storeName}}</span>
+                    </td>
+                  </tr>
+
+                  {{#if brand.hasSocial}}
+                  <tr>
+                    <td align="center" style="padding-bottom:14px;">
+                      {{#each brand.social}}
+                      <a href="{{this.url}}" style="display:inline-block; margin:0 8px;"><img src="{{this.iconUrl}}" alt="{{this.name}}" width="20" height="20" style="display:inline-block;"></a>
+                      {{/each}}
+                    </td>
+                  </tr>
+                  {{/if}}
+
+                  <tr>
+                    <td align="center" style="font-size:12px; line-height:20px; color:#9aa0a6;">
+                      Questions? <a href="mailto:{{brand.supportEmail}}" style="color:#a9cf5c; text-decoration:none;">{{brand.supportEmail}}</a>{{#if brand.supportPhone}} &nbsp;&middot;&nbsp; {{brand.supportPhone}}{{/if}}
+                    </td>
+                  </tr>
+
+                  {{#if brand.addressLine}}
+                  <tr>
+                    <td align="center" style="padding-top:8px; font-size:12px; line-height:18px; color:#7e848a;">
+                      {{brand.companyName}}, {{brand.addressLine}}
+                    </td>
+                  </tr>
+                  {{/if}}
+
+                  <tr>
+                    <td align="center" style="padding-top:12px; font-size:12px; line-height:18px; color:#7e848a;">
+                      Sent to <a href="mailto:{{email}}" style="color:#a9cf5c; text-decoration:none;">{{email}}</a>.
+                      {{#if isMarketing}}
+                        <br><a href="{{links.preferences}}" style="color:#a9cf5c; text-decoration:underline;">Email preferences</a>
+                        {{#if links.unsubscribe}}
+                          &nbsp;&middot;&nbsp;
+                          <a href="{{links.unsubscribe}}" style="color:#a9cf5c; text-decoration:underline;">Unsubscribe</a>
+                        {{/if}}
+                      {{else}}
+                        <br>You are receiving this because it relates to your order or account, not marketing.
+                      {{/if}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td align="center" style="padding-top:12px; font-size:11px; color:#5f6469;">
+                      &copy; {{brand.year}} {{brand.companyName}}. All rights reserved.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

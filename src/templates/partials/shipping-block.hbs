@@ -1,0 +1,30 @@
+{{!--
+  Delivery details, branched on how the order actually reaches the customer.
+
+  Every field here was already being published by Main-server and rendered by nothing:
+  a pickup order used to be emailed "Courier: Pickup / Address: <store address>" with no
+  contact name, no phone, and no indication it was a collection; a GIG order never showed its
+  waybill number at all.
+
+  Usage: {{> shipping-block shipping=shipping deliveryType=deliveryType gigWaybill=gigWaybill}}
+--}}
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+  {{#if (eq deliveryType "pickup")}}
+    <tr><td colspan="2"><h2 style="margin:0 0 12px 0; font-size:17px; line-height:24px; font-weight:700; color:#1B1B1B;">Collection details</h2></td></tr>
+    <tr><td colspan="2"><p class="small" style="margin:0 0 12px 0; font-size:13px; line-height:20px; color:#667085;">This order is for in-store pickup. Bring your order number and a valid ID.</p></td></tr>
+    {{> kv label="Pickup address" value=(fallback shipping.pickupAddress shipping.address "—")}}
+    {{#if shipping.pickupContactName}}{{> kv label="Ask for" value=shipping.pickupContactName}}{{/if}}
+    {{#if shipping.pickupContactPhone}}{{> kv label="Phone" value=shipping.pickupContactPhone}}{{/if}}
+  {{else}}
+    <tr><td colspan="2"><h2 style="margin:0 0 12px 0; font-size:17px; line-height:24px; font-weight:700; color:#1B1B1B;">Delivery details</h2></td></tr>
+    {{> kv label="Courier" value=(fallback shipping.courier "Standard shipping")}}
+    {{#if (eq deliveryType "gig")}}
+      {{> kv label="Service" value="GIG Logistics"}}
+      {{#if gigWaybill}}{{> kv label="Waybill number" value=gigWaybill}}{{/if}}
+    {{/if}}
+    {{#if shipping.deliveryEstimateLabel}}{{> kv label="Estimated delivery" value=shipping.deliveryEstimateLabel}}{{/if}}
+    {{#if shipping.recipientName}}{{> kv label="Recipient" value=shipping.recipientName}}{{/if}}
+    {{#if shipping.recipientPhone}}{{> kv label="Recipient phone" value=shipping.recipientPhone}}{{/if}}
+    {{> kv label="Address" value=(fallback shipping.address "—")}}
+  {{/if}}
+</table>

@@ -1,0 +1,114 @@
+{{!--
+  One template for every post-request return transition, branched on `status`.
+
+  Eight near-identical files would drift the same way the two service copies did; the states
+  differ only in headline, tone and which extra block appears.
+--}}
+{{> head title="Update on your return"}}
+
+{{#if (eq status "approved")}}
+  <h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Your return has been approved</h1>
+  <p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+    Hi {{greetingName firstName}}, good news — return <strong style="color:#1B1B1B;">{{returnNumber}}</strong> for order
+    {{orderNumber}} is approved. Send the items back using the instructions below and we will take it from there.
+  </p>
+{{else if (eq status "rejected")}}
+  <h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">We could not approve this return</h1>
+  <p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+    Hi {{greetingName firstName}}, we have reviewed return <strong style="color:#1B1B1B;">{{returnNumber}}</strong> for order
+    {{orderNumber}} and are not able to accept it. The reason is below — if you think this is a mistake, reply and we will take another look.
+  </p>
+{{else if (eq status "items_received")}}
+  <h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">We have your returned items</h1>
+  <p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+    Hi {{greetingName firstName}}, your parcel for return <strong style="color:#1B1B1B;">{{returnNumber}}</strong> has arrived.
+    Our team will inspect the items and update you within 2–3 business days.
+  </p>
+{{else if (eq status "inspecting")}}
+  <h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Your return is being inspected</h1>
+  <p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+    Hi {{greetingName firstName}}, we are checking the items from return <strong style="color:#1B1B1B;">{{returnNumber}}</strong> now.
+    You will hear from us as soon as the inspection is finished.
+  </p>
+{{else if (eq status "inspection_passed")}}
+  <h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Your return passed inspection</h1>
+  <p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+    Hi {{greetingName firstName}}, the items from return <strong style="color:#1B1B1B;">{{returnNumber}}</strong> are all in order.
+    Your refund is being processed and you will get a separate confirmation once the money is sent.
+  </p>
+{{else if (eq status "inspection_failed")}}
+  <h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">There is a problem with your returned items</h1>
+  <p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+    Hi {{greetingName firstName}}, the items from return <strong style="color:#1B1B1B;">{{returnNumber}}</strong> did not pass inspection.
+    The details are below — get in touch and we will agree what happens next.
+  </p>
+{{else if (eq status "completed")}}
+  <h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Your return is complete</h1>
+  <p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+    Hi {{greetingName firstName}}, return <strong style="color:#1B1B1B;">{{returnNumber}}</strong> for order {{orderNumber}} is now closed. Thanks for your patience.
+  </p>
+{{else if (eq status "cancelled")}}
+  <h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Your return has been cancelled</h1>
+  <p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+    Hi {{greetingName firstName}}, return <strong style="color:#1B1B1B;">{{returnNumber}}</strong> for order {{orderNumber}} has been cancelled and no further action is needed.
+  </p>
+{{else}}
+  <h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Update on your return</h1>
+  <p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+    Hi {{greetingName firstName}}, return <strong style="color:#1B1B1B;">{{returnNumber}}</strong> for order {{orderNumber}} is now {{titleCase status}}.
+  </p>
+{{/if}}
+
+<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin-bottom:20px;">
+  <tr>
+    <td style="padding:18px 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        {{> kv label="Return number" value=returnNumber}}
+        {{> kv label="Order number" value=orderNumber}}
+        {{> kv label="Type" value=(titleCase returnType)}}
+        {{> kv label="Status" value=(titleCase status)}}
+        {{> kv label="Updated" value=(formatDate updatedAt)}}
+        {{#if refundAmount}}{{> kv label="Refund amount" value=(currency refundAmount) accent=true}}{{/if}}
+      </table>
+    </td>
+  </tr>
+</table>
+
+{{#if adminNotes}}
+{{!-- The admin's note is the "why" behind a rejection; it is surfaced verbatim, not summarised away. --}}
+<table class="{{#if (or (eq status "rejected") (eq status "inspection_failed"))}}panel-warn{{else}}panel{{/if}}" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border-radius:12px; margin-bottom:20px; {{#if (or (eq status "rejected") (eq status "inspection_failed"))}}background-color:#fff6ed; border:1px solid #fddcab;{{else}}background-color:#f8fafc; border:1px solid #e4e7ec;{{/if}}">
+  <tr>
+    <td style="padding:18px 20px;">
+      <p style="margin:0 0 6px 0; font-size:13px; line-height:18px; font-weight:600; color:#667085; text-transform:uppercase; letter-spacing:0.5px;">Note from our team</p>
+      <p style="margin:0; font-size:14px; line-height:22px; color:#475467;">{{adminNotes}}</p>
+    </td>
+  </tr>
+</table>
+{{/if}}
+
+{{#if returnAddress}}
+<table class="panel-accent" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f4f8ea; border:1px solid #dbe8bd; border-radius:12px; margin-bottom:20px;">
+  <tr>
+    <td style="padding:18px 20px;">
+      <p style="margin:0 0 6px 0; font-size:13px; line-height:18px; font-weight:600; color:#667085; text-transform:uppercase; letter-spacing:0.5px;">Send your items to</p>
+      <p style="margin:0 0 10px 0; font-size:14px; line-height:22px; font-weight:600; color:#1B1B1B;">{{returnAddress}}</p>
+      {{#if returnInstructions}}<p style="margin:0; font-size:14px; line-height:22px; color:#475467;">{{returnInstructions}}</p>{{/if}}
+      <p style="margin:10px 0 0 0; font-size:13px; line-height:20px; color:#667085;">Write <strong style="color:#1B1B1B;">{{returnNumber}}</strong> on the outside of the parcel so we can match it to your return.</p>
+    </td>
+  </tr>
+</table>
+{{/if}}
+
+<h2 style="margin:0 0 4px 0; font-size:17px; line-height:24px; font-weight:700; color:#1B1B1B;">Items in this return</h2>
+{{> product-list items=items hidePrice=true}}
+
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:20px;">
+  <tr><td>{{> button href=viewReturnLink label="View this return"}}</td></tr>
+</table>
+
+<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
+  Questions about this return? Email
+  <a href="mailto:{{brand.supportEmail}}" style="color:#6f9420; text-decoration:none;">{{brand.supportEmail}}</a> quoting {{returnNumber}}.
+</p>
+
+{{> foot}}

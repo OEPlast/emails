@@ -1,0 +1,8 @@
+node_modules/
+
+# Built output is never committed. Consumers install this package from git, and npm runs the
+# `prepare` script on clone to build it — so a committed dist would only ever be stale.
+dist/
+
+# Preview harness output.
+preview/

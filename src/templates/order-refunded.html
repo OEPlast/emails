@@ -1,0 +1,50 @@
+{{> head title="Your refund has been issued"}}
+
+<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Your refund is on its way</h1>
+
+<p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
+  Hi {{greetingName firstName}}, we have issued your refund for order <strong style="color:#1B1B1B;">{{orderNumber}}</strong>.
+  Thanks for your patience while we processed it.
+</p>
+
+<table class="panel-accent" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f4f8ea; border:1px solid #dbe8bd; border-radius:12px; margin-bottom:20px;">
+  <tr>
+    <td align="center" style="padding:22px 16px;">
+      <p class="small" style="margin:0 0 4px 0; font-size:13px; line-height:18px; color:#667085; text-transform:uppercase; letter-spacing:1px;">Refund amount</p>
+      <div class="strong-figure" style="font-size:28px; line-height:36px; font-weight:700; color:#1B1B1B;">{{currency refundAmount}}</div>
+      {{#if refundEtaDays}}
+      <p class="small" style="margin:10px 0 0 0; font-size:13px; line-height:18px; color:#667085;">Expect it within {{refundEtaDays}} business days</p>
+      {{/if}}
+    </td>
+  </tr>
+</table>
+
+<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin-bottom:20px;">
+  <tr>
+    <td style="padding:18px 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        {{> kv label="Return number" value=returnNumber}}
+        {{> kv label="Order number" value=orderNumber}}
+        {{> kv label="Order date" value=(formatDate purchaseDate)}}
+        {{> kv label="Refunded to" value=refundMethod}}
+        {{#if refundReference}}{{> kv label="Reference" value=refundReference}}{{/if}}
+        {{> kv label="Issued" value=(formatDate refundedAt)}}
+      </table>
+    </td>
+  </tr>
+</table>
+
+<h2 style="margin:0 0 4px 0; font-size:17px; line-height:24px; font-weight:700; color:#1B1B1B;">Refunded items</h2>
+{{> product-list items=returnedProducts}}
+
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:20px;">
+  <tr><td>{{> button href=checkRefundLink label="View refund details"}}</td></tr>
+</table>
+
+<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
+  Refunds are returned to the original payment method. How quickly it appears depends on your bank.
+  If it has not landed after {{fallback refundEtaDays 10}} business days, contact
+  <a href="mailto:{{brand.supportEmail}}" style="color:#6f9420; text-decoration:none;">{{brand.supportEmail}}</a> quoting {{returnNumber}}.
+</p>
+
+{{> foot}}
