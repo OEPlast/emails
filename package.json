@@ -1,6 +1,6 @@
 {
   "name": "@rawura/emails",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Shared transactional email templates, rendering engine and payload types for the Rawura platform",
   "repository": {
