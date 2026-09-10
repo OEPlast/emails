@@ -14,14 +14,14 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { buildEmail } from '../src/build';
 import { getAvailableTemplates } from '../src/engine';
-import { resolveBrand } from '../src/branding';
+import type { EmailBrand } from '../src/branding';
 import type { EmailKind, EmailPayloadMap } from '../src/types';
 import { fixtures, variants } from './fixtures';
 
 const OUT_DIR = path.join(__dirname, '..', '..', 'preview');
 
 /** A brand with everything populated, so the header, socials and address all get exercised. */
-const brand = resolveBrand({
+const brand: EmailBrand = {
   storeName: 'Rawura',
   companyName: 'Rawura Stores Limited',
   logoUrl: '',
@@ -29,13 +29,27 @@ const brand = resolveBrand({
   apiUrl: 'https://api.rawura.com',
   supportEmail: 'support@rawura.com',
   supportPhone: '+234 809 555 0110',
-  address: { line1: '7 Kudirat Abiola Way', city: 'Ikeja', state: 'Lagos', country: 'Nigeria' },
-  social: {
-    instagram: 'https://instagram.com/rawura',
-    facebook: 'https://facebook.com/rawura',
-    x: 'https://x.com/rawura',
-  },
-});
+  addressLine: '7 Kudirat Abiola Way, Ikeja, Lagos, Nigeria',
+  social: [
+    {
+      name: 'Instagram',
+      url: 'https://instagram.com/rawura',
+      iconUrl: 'https://res.cloudinary.com/dau2gxgbw/image/upload/v1676965510/email-template/images/ig-icon_lyd5yy.png',
+    },
+    {
+      name: 'Facebook',
+      url: 'https://facebook.com/rawura',
+      iconUrl: 'https://res.cloudinary.com/dau2gxgbw/image/upload/v1676965509/email-template/images/fb-icon_jdwajr.png',
+    },
+    {
+      name: 'X',
+      url: 'https://x.com/rawura',
+      iconUrl: 'https://res.cloudinary.com/dau2gxgbw/image/upload/v1676965510/email-template/images/twitter-icon_irb5ks.png',
+    },
+  ],
+  hasSocial: true,
+  year: new Date().getFullYear(),
+};
 
 interface Problem {
   file: string;
@@ -71,6 +85,42 @@ function inspect(file: string, body: string, problems: Problem[]): void {
   }
 }
 
+/**
+ * Dark-mode contrast guard.
+ *
+ * An `!important` rule in the <style> block beats a plain inline style, so `p { color: … }`
+ * recolours correctly in dark mode. Elements the dark block does NOT name — <strong>, <span>,
+ * <td>, <div> — keep their inline colour instead, and a near-black inline colour then renders
+ * black-on-black. That shipped in order-delivered ("Something not right?" was invisible).
+ *
+ * Any element carrying a dark inline colour must therefore either be named by a tag selector
+ * in the dark block, or carry a class that is.
+ */
+const DARK_INK = /#(1B1B1B|1b1b1b|000000)\b/;
+const DARK_SAFE_TAGS = /^(h1|h2|h3|strong|b)$/;
+const DARK_SAFE_CLASSES = /\b(ink|kv-value|strong-figure|code|footer|a-warn)\b/;
+
+function inspectDarkMode(file: string, html: string, problems: Problem[]): void {
+  const tagRe = /<(\w+)([^>]*\bstyle="[^"]*")[^>]*>/g;
+
+  for (const [, tag, attrs] of html.matchAll(tagRe)) {
+    // background-color:#1B1B1B is the footer's dark panel — correct, and not a text colour.
+    const styleMatch = /style="([^"]*)"/.exec(attrs);
+    const style = styleMatch?.[1] ?? '';
+    const colour = /(^|;)\s*color:\s*([^;]+)/.exec(style)?.[2] ?? '';
+    if (!DARK_INK.test(colour)) continue;
+
+    if (DARK_SAFE_TAGS.test(tag)) continue;
+    if (DARK_SAFE_CLASSES.test(/class="([^"]*)"/.exec(attrs)?.[1] ?? '')) continue;
+
+    problems.push({
+      file,
+      issue: `<${tag}> has a near-black inline colour the dark-mode block cannot override — add class="ink"`,
+      excerpt: `<${tag}${attrs}>`.replace(/\s+/g, ' ').slice(0, 180),
+    });
+  }
+}
+
 function render(name: string, kind: EmailKind, data: EmailPayloadMap[EmailKind], problems: Problem[]): void {
   // Stand-in for the HMAC the host service signs, so the marketing footer and the
   // List-Unsubscribe path are exercised rather than silently skipped.
@@ -80,6 +130,7 @@ function render(name: string, kind: EmailKind, data: EmailPayloadMap[EmailKind],
   fs.writeFileSync(path.join(OUT_DIR, `${name}.txt`), `Subject: ${built.subject}\n\n${built.text}`, 'utf-8');
 
   inspect(`${name}.html`, built.html, problems);
+  inspectDarkMode(`${name}.html`, built.html, problems);
   inspect(`${name}.txt`, built.text, problems);
   inspect(`${name} [subject]`, built.subject, problems);
 

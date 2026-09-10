@@ -65,6 +65,9 @@
     p.small { font-size: 13px; line-height: 20px; color: #667085; }
     .muted { color: #667085; }
     .strong-figure { font-size: 20px; line-height: 28px; font-weight: 700; color: #1B1B1B; }
+    /* Primary-ink text on elements the dark-mode block would not otherwise reach —
+       spans, table cells and prices that must stay prominent rather than go muted. */
+    .ink { color: #1B1B1B; }
 
     /* --- Components --------------------------------------------------- */
     .btn { display: block; border-radius: 10px; background-color: #6f9420; padding: 14px 20px; text-align: center; font-size: 16px; font-weight: 600; color: #ffffff !important; }
@@ -88,6 +91,13 @@
       .rule   { background-color: #2f353b !important; }
       h1, h2, h3, .kv-value, .strong-figure, .code { color: #e8eaed !important; }
       p, .muted, .kv-label { color: #a1a5ab !important; }
+      /* An `!important` rule beats a plain inline style, which is how <p> recolours above.
+         But nothing targeted <strong>/<span>/<td>, so their inline #1B1B1B survived and
+         rendered black-on-black. `.ink` covers the elements a bare tag selector cannot,
+         and wins over the muted `p` rule on class specificity. */
+      strong, b, .ink { color: #e8eaed !important; }
+      /* Warn-panel link: #b54708 is unreadable on the dark warn background. */
+      .a-warn { color: #fdb022 !important; }
       .panel        { background-color: #212529 !important; border-color: #333940 !important; }
       .panel-accent { background-color: #222a17 !important; border-color: #3f5220 !important; }
       .panel-warn   { background-color: #2b2116 !important; border-color: #5a4222 !important; }

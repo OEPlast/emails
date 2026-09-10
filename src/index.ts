@@ -1,14 +1,14 @@
 /**
- * @rawura/emails — the single source of truth for transactional email.
+ * @rawura/emails — templates, rendering and transport for Rawura email.
  *
- * Consumed by both `Main-server` and `event-bus`. Neither service should own templates, a
- * renderer, or payload types of its own; they own only an SMTP transport and a brand
- * resolver.
+ * Host services (`Main-server`, `event-bus`) own brand resolution and their own payload types.
+ * This package owns the templates, the renderer, subjects, plain-text bodies and the SMTP
+ * transport, and describes its render inputs structurally: a service passes any object whose
+ * shape is compatible with what a template reads. No brand settings types and no types shared
+ * with services are exported from here.
  */
 
-export * from './types';
-export * from './branding';
-export * from './build';
+export { buildEmail } from './build';
 export { Mailer, type MailerOptions, type MailerLogger } from './mailer';
 export { renderEmailTemplate, getAvailableTemplates } from './engine';
 export { buildSubject, isMarketingKind } from './subjects';

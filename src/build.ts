@@ -10,13 +10,13 @@
 import { renderEmailTemplate } from './engine';
 import { buildSubject, isMarketingKind } from './subjects';
 import { buildText } from './text';
-import { preferencesUrl, unsubscribeUrl, resolveBrand } from './branding';
-import type { Brand, BrandInput } from './branding';
+import { preferencesUrl, unsubscribeUrl } from './branding';
+import type { EmailBrand } from './branding';
 import type { BuiltEmail, EmailKind, EmailPayloadMap } from './types';
 
 /** Everything a template can reference, on top of the payload's own fields. */
 export interface TemplateContext {
-  brand: Brand;
+  brand: EmailBrand;
   /** Pre-rendered links so no template has to build a URL. */
   links: {
     preferences: string;
@@ -55,19 +55,15 @@ const PREHEADERS: Record<EmailKind, string> = {
 /**
  * Builds the email.
  *
- * @param brandInput brand values from the host service (Settings on Main-server, the
- *        internal branding endpoint on event-bus). Omit it and env defaults are used.
+ * @param brand the brand as already resolved by the host service. This package does not
+ *        resolve, default or normalise it; any structurally-compatible object is accepted.
  */
 export function buildEmail<K extends EmailKind>(
   kind: K,
   data: EmailPayloadMap[K],
-  brandInput: BrandInput | Brand = {},
+  brand: EmailBrand,
   options: { unsubscribeToken?: string } = {}
 ): BuiltEmail {
-  // A caller may hand us an already-resolved Brand; re-resolving it is harmless and keeps
-  // the signature forgiving.
-  const brand: Brand = 'addressLine' in brandInput ? (brandInput as Brand) : resolveBrand(brandInput);
-
   const isMarketing = isMarketingKind(kind);
   const context: TemplateContext = {
     brand,

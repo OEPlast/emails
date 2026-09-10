@@ -5,14 +5,14 @@
  * from the bugs: one injected the logo and one did not, one logged through winston and one
  * through console, and their subject lines had already diverged.
  *
- * A service supplies only what is genuinely service-specific: how to resolve brand values,
- * and where to log.
+ * A service supplies only what is genuinely service-specific: its already-resolved brand
+ * values, and where to log. This package never resolves a brand itself.
  */
 
 import nodemailer, { type Transporter } from 'nodemailer';
 import { buildEmail } from './build';
 import { isMarketingKind } from './subjects';
-import type { Brand } from './branding';
+import type { EmailBrand } from './branding';
 import type { BuiltEmail, EmailKind, EmailPayloadMap } from './types';
 
 export interface MailerLogger {
@@ -22,8 +22,11 @@ export interface MailerLogger {
 }
 
 export interface MailerOptions {
-  /** Resolves current brand values (store Settings on Main-server, internal API on event-bus). */
-  getBrand: () => Promise<Brand>;
+  /**
+   * Returns the host service's current, fully-resolved brand. Resolution, defaults and caching
+   * are the host's responsibility; any object structurally compatible with `EmailBrand` works.
+   */
+  getBrand: () => Promise<EmailBrand>;
   logger?: MailerLogger;
   /** Attempts per email, including the first. Transient SMTP failures are common. */
   maxAttempts?: number;

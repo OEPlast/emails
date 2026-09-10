@@ -7,7 +7,7 @@
  * facts as the HTML.
  */
 
-import type { Brand } from './branding';
+import type { EmailBrand } from './branding';
 import { preferencesUrl } from './branding';
 import { formatToNaira, formatDateTime, formatDateOnly, greetingName, titleCase } from './format';
 import type {
@@ -81,7 +81,7 @@ function shippingLines(shipping: ShippingInfo, deliveryType: DeliveryType | unde
   );
 }
 
-function footer(brand: Brand, email: string, isMarketing: boolean, unsubscribe: string): string {
+function footer(brand: EmailBrand, email: string, isMarketing: boolean, unsubscribe: string): string {
   return lines(
     '',
     RULE,
@@ -93,7 +93,7 @@ function footer(brand: Brand, email: string, isMarketing: boolean, unsubscribe: 
   );
 }
 
-type TextBuilder<K extends EmailKind> = (data: EmailPayloadMap[K], brand: Brand) => string;
+type TextBuilder<K extends EmailKind> = (data: EmailPayloadMap[K], brand: EmailBrand) => string;
 type TextRegistry = { [K in EmailKind]: TextBuilder<K> };
 
 const registry: TextRegistry = {
@@ -367,7 +367,7 @@ const registry: TextRegistry = {
 export function buildText<K extends EmailKind>(
   kind: K,
   data: EmailPayloadMap[K],
-  brand: Brand,
+  brand: EmailBrand,
   isMarketing: boolean,
   unsubscribe = ''
 ): string {

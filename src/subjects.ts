@@ -6,11 +6,11 @@
  * order subject now quotes the same human-readable `orderNumber`.
  */
 
-import type { Brand } from './branding';
+import type { EmailBrand } from './branding';
 import type { EmailKind, EmailPayloadMap } from './types';
 import { formatToNaira, titleCase } from './format';
 
-type SubjectBuilder<K extends EmailKind> = (data: EmailPayloadMap[K], brand: Brand) => string;
+type SubjectBuilder<K extends EmailKind> = (data: EmailPayloadMap[K], brand: EmailBrand) => string;
 
 type SubjectRegistry = { [K in EmailKind]: SubjectBuilder<K> };
 
@@ -58,7 +58,7 @@ const registry: SubjectRegistry = {
       : `${d.products.length} wishlist items are back in stock`,
 };
 
-export function buildSubject<K extends EmailKind>(kind: K, data: EmailPayloadMap[K], brand: Brand): string {
+export function buildSubject<K extends EmailKind>(kind: K, data: EmailPayloadMap[K], brand: EmailBrand): string {
   const builder = registry[kind] as SubjectBuilder<K>;
   return builder(data, brand);
 }

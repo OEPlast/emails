@@ -39,10 +39,10 @@
               {{#if discountPrice}}
               <p style="margin:0; font-size:14px; line-height:20px;">
                 <span style="color:#98a2b3; text-decoration:line-through; margin-right:6px;">{{currency price}}</span>
-                <span style="font-weight:700; color:#1B1B1B;">{{currency discountPrice}}</span>
+                <span class="ink" style="font-weight:700; color:#1B1B1B;">{{currency discountPrice}}</span>
               </p>
               {{else if price}}
-              <p style="margin:0; font-size:14px; line-height:20px; font-weight:700; color:#1B1B1B;">{{currency price}}</p>
+              <p class="ink" style="margin:0; font-size:14px; line-height:20px; font-weight:700; color:#1B1B1B;">{{currency price}}</p>
               {{/if}}
             {{/unless}}
             {{#if ../showReviewLink}}
@@ -53,7 +53,7 @@
           </td>
           {{#unless ../hidePrice}}
           {{#if subtotal}}
-          <td align="right" style="vertical-align:top; padding-left:10px; white-space:nowrap; font-size:14px; line-height:20px; font-weight:700; color:#1B1B1B;">
+          <td align="right" class="ink" style="vertical-align:top; padding-left:10px; white-space:nowrap; font-size:14px; line-height:20px; font-weight:700; color:#1B1B1B;">
             {{currency subtotal}}
           </td>
           {{/if}}
