@@ -32,6 +32,18 @@ export function getCdnUrl(path: string | undefined | null): string {
   return `${getCdnBaseUrl()}${trimmed.startsWith('/') ? trimmed.slice(1) : trimmed}`;
 }
 
+/**
+ * The URL to use for an image inside an email.
+ *
+ * The upload pipeline stores every image as WebP with a PNG copy beside it on the CDN
+ * (`base.webp` + `base.png`). Outlook on Windows cannot display WebP, so for CDN images email
+ * points at the PNG copy. Anything off-CDN is returned unchanged.
+ */
+export function getEmailImageUrl(path: string | undefined | null): string {
+  const url = getCdnUrl(path);
+  return isCdnUrl(url) && /\.webp$/i.test(url) ? url.replace(/\.webp$/i, '.png') : url;
+}
+
 export function isCdnUrl(url: string): boolean {
   return url.startsWith(getCdnBaseUrl());
 }

@@ -1,52 +1,12 @@
-{{> head title="Your order has been cancelled"}}
-
-<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Order {{orderNumber}} has been cancelled</h1>
-
-<p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
-  Hi {{greetingName firstName}}, we are writing to confirm that order <strong style="color:#1B1B1B;">{{orderNumber}}</strong>,
-  placed on {{formatDateOnly purchaseDate}}, was cancelled on {{formatDate cancelledAt}}. Nothing from it will be shipped.
-</p>
-
-<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin-bottom:20px;">
-  <tr>
-    <td style="padding:18px 20px;">
-      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-        {{> kv label="Order number" value=orderNumber}}
-        {{> kv label="Placed" value=(formatDate purchaseDate)}}
-        {{> kv label="Cancelled" value=(formatDate cancelledAt)}}
-        {{#if reason}}{{> kv label="Reason" value=reason}}{{/if}}
-      </table>
-    </td>
-  </tr>
-</table>
+{{#> layout title="Your order has been cancelled"}}
+<h1 style="margin:0 0 12px 0; font-size:22px; line-height:30px;">Order {{orderNumber}} has been cancelled</h1>
+<p>Hi {{greetingName firstName}}, your order from {{formatDateOnly purchaseDate}} was cancelled and won't be shipped.{{#if reason}}<br>Reason: {{reason}}{{/if}}</p>
 
 {{#if (gt refundAmount 0)}}
-{{!--
-  Cancellation used to say nothing about money at all, which is the first thing a customer
-  who has already paid wants to know.
---}}
-<table class="panel-accent" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f4f8ea; border:1px solid #dbe8bd; border-radius:12px; margin-bottom:20px;">
-  <tr>
-    <td style="padding:18px 20px;">
-      <p style="margin:0 0 6px 0; font-size:14px; line-height:22px; color:#3f5220;"><strong>Your refund is on its way</strong></p>
-      <p style="margin:0; font-size:14px; line-height:22px; color:#475467;">
-        We are returning <strong style="color:#1B1B1B;">{{currency refundAmount}}</strong> to your original payment method{{#if refundEtaDays}}. Allow up to {{refundEtaDays}} business days for it to appear{{/if}}.
-      </p>
-    </td>
-  </tr>
-</table>
+<p>We're refunding <strong>{{currency refundAmount}}</strong> to your original payment method.{{#if refundEtaDays}} It can take up to {{refundEtaDays}} business days to appear.{{/if}}</p>
 {{/if}}
 
-<h2 style="margin:0 0 4px 0; font-size:17px; line-height:24px; font-weight:700; color:#1B1B1B;">Cancelled items</h2>
-{{> product-list items=products}}
+{{> items items=products hidePrice=true}}
 
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:20px;">
-  <tr><td>{{> button href=shopLink label="Continue shopping"}}</td></tr>
-</table>
-
-<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
-  Did not expect this cancellation? Contact
-  <a href="mailto:{{brand.supportEmail}}" style="color:#6f9420; text-decoration:none;">{{brand.supportEmail}}</a> quoting order {{orderNumber}} and we will look into it.
-</p>
-
-{{> foot}}
+{{> button href=shopLink label="Continue shopping"}}
+{{/layout}}

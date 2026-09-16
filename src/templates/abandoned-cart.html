@@ -1,28 +1,12 @@
-{{> head title="You left something in your cart"}}
+{{#> layout title="You left something in your cart"}}
+<h1 style="margin:0 0 12px 0; font-size:22px; line-height:30px;">Still thinking it over?</h1>
+<p>Hi {{greetingName firstName}}, you left {{pluralize cartItems.length "item"}} in your cart.</p>
 
-<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Still thinking it over, {{greetingName firstName}}?</h1>
+{{> items items=cartItems images=true}}
 
-<p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
-  You left {{pluralize cartItems.length "item"}} in your {{brand.storeName}} cart. We have saved them for you — stock permitting.
-</p>
+{{#if cartTotal}}<p><strong>Cart total: {{currency cartTotal}}</strong></p>{{/if}}
 
-{{> product-list items=cartItems}}
+{{> button href=cartLink label="Return to my cart"}}
 
-{{#if cartTotal}}
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:14px;">
-  <tr>
-    <td class="ink" style="font-size:16px; font-weight:700; color:#1B1B1B;">Cart total</td>
-    <td align="right" class="strong-figure" style="font-size:20px; line-height:28px; font-weight:700; color:#1B1B1B;">{{currency cartTotal}}</td>
-  </tr>
-</table>
-{{/if}}
-
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:20px;">
-  <tr><td>{{> button href=cartLink label="Return to my cart"}}</td></tr>
-</table>
-
-<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
-  Prices and availability can change. Anything you no longer want can be removed at checkout.
-</p>
-
-{{> foot}}
+<p class="muted" style="font-size:13px; line-height:20px; color:#6b7280;">Prices and stock can change until you check out.</p>
+{{/layout}}

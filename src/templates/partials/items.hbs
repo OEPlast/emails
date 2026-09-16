@@ -1,0 +1,33 @@
+{{!--
+  Line items, one row each: name × quantity, variant, and the line price on the right.
+
+  Usage: {{> items items=products}}
+         {{> items items=products hidePrice=true}}        names and quantities only
+         {{> items items=cartItems images=true}}          48px thumbnail (marketing mail)
+         {{> items items=products showReviewLink=true}}   "Write a review" per item
+--}}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px 0;">
+  {{#each items}}
+  <tr>
+    {{#if ../images}}
+    <td class="rule" width="60" valign="top" style="width:60px; padding:10px 12px 10px 0; border-bottom:1px solid #e5e7eb;">
+      {{#if imagePath}}<img src="{{cdnUrl imagePath}}" alt="" width="48" height="48" style="display:block; width:48px; height:48px; border-radius:6px; object-fit:cover;">{{/if}}
+    </td>
+    {{/if}}
+    <td class="rule" valign="top" style="padding:10px 0; border-bottom:1px solid #e5e7eb;">
+      {{name}}{{#if quantity}} &times; {{quantity}}{{/if}}
+      {{#if attributes.length}}
+      <br><span class="muted" style="font-size:13px; color:#6b7280;">{{#each attributes}}{{this.name}}: {{this.value}}{{#unless @last}} &middot; {{/unless}}{{/each}}</span>
+      {{/if}}
+      {{#if ../showReviewLink}}{{#if reviewLink}}
+      <br><a href="{{reviewLink}}" style="font-size:13px; color:#6f9420;">Write a review</a>
+      {{/if}}{{/if}}
+    </td>
+    {{#unless ../hidePrice}}
+    <td class="rule" valign="top" align="right" style="padding:10px 0 10px 12px; border-bottom:1px solid #e5e7eb; white-space:nowrap;">
+      {{#if subtotal}}{{currency subtotal}}{{else if discountPrice}}{{currency discountPrice}}{{else if price}}{{currency price}}{{/if}}
+    </td>
+    {{/unless}}
+  </tr>
+  {{/each}}
+</table>

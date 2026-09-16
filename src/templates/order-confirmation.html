@@ -1,45 +1,21 @@
-{{> head title="Order confirmed"}}
+{{#> layout title="Order confirmed"}}
+<h1 style="margin:0 0 12px 0; font-size:22px; line-height:30px;">Thanks, {{greetingName firstName}}. Your order is confirmed.</h1>
+<p>Order <strong>{{orderNumber}}</strong> is paid and we're getting it ready. {{#if (eq deliveryType "pickup")}}We'll email you when it's ready to collect.{{else}}We'll email you when it ships.{{/if}}</p>
 
-<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Thanks, {{greetingName firstName}} — your order is confirmed</h1>
+{{> items items=products}}
 
-<p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
-  We have received your payment and are getting order <strong style="color:#1B1B1B;">{{orderNumber}}</strong> ready.
-  {{#if (eq deliveryType "pickup")}}We will let you know as soon as it is available for collection.{{else}}We will email you again the moment it ships.{{/if}}
+<p>
+  Shipping: {{currency payment.shipping}}<br>
+  {{#if (gt payment.tax 0)}}Tax: {{currency payment.tax}}<br>{{/if}}
+  {{#if (gt payment.discount 0)}}Discount: -{{currency payment.discount}}<br>{{/if}}
+  <strong>Total paid: {{currency payment.subtotal}}</strong>
 </p>
 
-<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin-bottom:20px;">
-  <tr>
-    <td style="padding:18px 20px;">
-      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-        {{> kv label="Order number" value=orderNumber}}
-        {{> kv label="Order date" value=(formatDate purchaseDate)}}
-        {{#if payment.reference}}{{> kv label="Payment reference" value=payment.reference}}{{/if}}
-      </table>
-    </td>
-  </tr>
-</table>
+{{#if (eq deliveryType "pickup")}}
+<p>Collect from: <strong>{{fallback shipping.pickupAddress shipping.address "our store"}}</strong>{{#if shipping.pickupContactPhone}}<br>Pickup contact: {{shipping.pickupContactPhone}}{{/if}}<br>Bring your order number and a valid ID.</p>
+{{else}}
+<p>Delivering to: <strong>{{shipping.address}}</strong>{{#if shipping.deliveryEstimateLabel}}<br>Estimated delivery: {{shipping.deliveryEstimateLabel}}{{/if}}{{#if gigWaybill}}<br>GIG waybill: {{gigWaybill}}{{/if}}</p>
+{{/if}}
 
-<h2 style="margin:0 0 4px 0; font-size:17px; line-height:24px; font-weight:700; color:#1B1B1B;">
-  {{pluralize products.length "item"}}
-</h2>
-{{> product-list items=products}}
-
-{{> divider}}
-
-{{> payment-summary payment=payment}}
-
-{{> divider}}
-
-{{> shipping-block shipping=shipping deliveryType=deliveryType gigWaybill=gigWaybill}}
-
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:8px;">
-  <tr><td>{{> button href=orderStatusLink label="View your order"}}</td></tr>
-</table>
-
-<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
-  This is an automated confirmation — please do not reply to it. For anything about this order, quote
-  <strong style="color:#1B1B1B;">{{orderNumber}}</strong> and contact
-  <a href="mailto:{{brand.supportEmail}}" style="color:#6f9420; text-decoration:none;">{{brand.supportEmail}}</a>.
-</p>
-
-{{> foot}}
+{{> button href=orderStatusLink label="View your order"}}
+{{/layout}}

@@ -13,7 +13,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as Handlebars from 'handlebars';
 import { formatToNaira, formatDateTime, formatDateOnly, pluralize, titleCase, greetingName } from './format';
-import { getCdnUrl } from './cdn-url';
+import { getCdnUrl, getEmailImageUrl } from './cdn-url';
 
 const TEMPLATE_DIR = path.join(__dirname, 'templates');
 const PARTIAL_DIR = path.join(TEMPLATE_DIR, 'partials');
@@ -31,6 +31,7 @@ function registerHelpers(): void {
   Handlebars.registerHelper('formatDate', (date: unknown) => formatDateTime(date as Date | string));
   Handlebars.registerHelper('formatDateOnly', (date: unknown) => formatDateOnly(date as Date | string));
   Handlebars.registerHelper('cdnUrl', (imagePath: unknown) => getCdnUrl(imagePath as string));
+  Handlebars.registerHelper('emailImage', (imagePath: unknown) => getEmailImageUrl(imagePath as string));
   Handlebars.registerHelper('titleCase', (value: unknown) => titleCase(value as string));
   Handlebars.registerHelper('greetingName', (value: unknown) => greetingName(value as string));
 

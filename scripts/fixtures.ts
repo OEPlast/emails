@@ -31,7 +31,7 @@ const chair: EmailProduct = {
   subtotal: 31600,
 };
 
-/** Deliberately image-less: the product-list partial must show a placeholder, not a broken img. */
+/** Deliberately image-less: the items partial must render no <img> rather than a broken one. */
 const crate: EmailProduct = {
   name: 'Ventilated Produce Crate',
   imagePath: '',

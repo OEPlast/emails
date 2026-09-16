@@ -1,53 +1,19 @@
-{{> head title="Your order has shipped"}}
+{{#> layout title="Your order has shipped"}}
+<h1 style="margin:0 0 12px 0; font-size:22px; line-height:30px;">Your order is on its way</h1>
+<p>Hi {{greetingName firstName}}, order <strong>{{orderNumber}}</strong> has shipped.</p>
 
-<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Your order is on its way</h1>
-
-<p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
-  Hi {{greetingName firstName}}, order <strong style="color:#1B1B1B;">{{orderNumber}}</strong> has left our warehouse.
+<p>
+  Tracking number: <strong>{{fallback trackingNumber "not available yet"}}</strong>
+  {{#if gigWaybill}}<br>GIG waybill: <strong>{{gigWaybill}}</strong>{{/if}}
+  {{#if shipping.courier}}<br>Courier: {{shipping.courier}}{{/if}}
+  {{#if shipping.deliveryEstimateLabel}}<br>Estimated delivery: {{shipping.deliveryEstimateLabel}}{{/if}}
 </p>
 
-{{!--
-  The tracking number is the entire point of this email and the previous template never
-  rendered it — it appeared in the subject line and nowhere in the body.
---}}
-<table class="panel-accent" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f4f8ea; border:1px solid #dbe8bd; border-radius:12px; margin-bottom:20px;">
-  <tr>
-    <td align="center" style="padding:22px 16px;">
-      <p class="small" style="margin:0 0 6px 0; font-size:13px; line-height:18px; color:#667085; text-transform:uppercase; letter-spacing:1px;">Tracking number</p>
-      <div class="ink" style="font-family:'SF Mono',Consolas,Menlo,monospace; font-size:22px; line-height:30px; font-weight:700; letter-spacing:2px; color:#1B1B1B; word-break:break-all;">{{fallback trackingNumber "Not yet available"}}</div>
-      {{#if gigWaybill}}
-      <p class="small" style="margin:10px 0 0 0; font-size:13px; line-height:18px; color:#667085;">GIG waybill: <strong style="color:#1B1B1B;">{{gigWaybill}}</strong></p>
-      {{/if}}
-    </td>
-  </tr>
-</table>
+{{#if products.length}}{{> items items=products hidePrice=true}}{{/if}}
 
 {{#if trackingLink}}
 {{> button href=trackingLink label="Track your parcel"}}
+{{else}}
+{{> button href=manageOrderLink label="View your order"}}
 {{/if}}
-
-<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin:20px 0;">
-  <tr>
-    <td style="padding:18px 20px;">
-      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-        {{> kv label="Order number" value=orderNumber}}
-        {{> kv label="Order date" value=(formatDate purchaseDate)}}
-        {{> kv label="Status" value=(fallback orderStatus "Shipped")}}
-      </table>
-    </td>
-  </tr>
-</table>
-
-{{> shipping-block shipping=shipping deliveryType=deliveryType gigWaybill=gigWaybill}}
-
-{{#if products.length}}
-{{> divider}}
-<h2 style="margin:0 0 4px 0; font-size:17px; line-height:24px; font-weight:700; color:#1B1B1B;">What is in this shipment</h2>
-{{> product-list items=products hidePrice=true}}
-{{/if}}
-
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:20px;">
-  <tr><td>{{> button href=manageOrderLink label="Manage your order"}}</td></tr>
-</table>
-
-{{> foot}}
+{{/layout}}

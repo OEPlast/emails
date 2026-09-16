@@ -38,8 +38,8 @@ data it does not render. `send()` never throws — it logs the kind and recipien
 ## Adding an email
 
 1. Add the payload interface and a `EmailPayloadMap` entry in `src/types.ts`.
-2. Add `src/templates/<kind>.html`, opening with `{{> head title="…"}}` and closing with
-   `{{> foot}}`.
+2. Add `src/templates/<kind>.html`, wrapping the body in `{{#> layout title="…"}} … {{/layout}}`.
+   Keep it to a headline, a short paragraph, `Label: value` lines and one `{{> button}}`.
 3. Add a subject in `src/subjects.ts` and a plain-text body in `src/text.ts` — both registries
    are exhaustive over `EmailKind`, so TypeScript will tell you what is missing.
 4. Add a preheader in `src/build.ts` and a fixture in `scripts/fixtures.ts`.

@@ -1,20 +1,8 @@
-{{> head title="Back in stock"}}
+{{#> layout title="Back in stock"}}
+<h1 style="margin:0 0 12px 0; font-size:22px; line-height:30px;">Back in stock</h1>
+<p>Hi {{greetingName firstName}}, {{pluralize products.length "item"}} from your wishlist {{#if (eq products.length 1)}}is{{else}}are{{/if}} available again.</p>
 
-<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Back in stock, {{greetingName firstName}}</h1>
+{{> items items=products images=true}}
 
-<p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
-  {{pluralize products.length "item"}} from your wishlist {{#if (eq products.length 1)}}is{{else}}are{{/if}} available again.
-  These tend to go quickly, so grab {{#if (eq products.length 1)}}it{{else}}them{{/if}} while you can.
-</p>
-
-{{> product-list items=products}}
-
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:20px;">
-  <tr><td>{{> button href=viewWishlistLink label="View my wishlist"}}</td></tr>
-</table>
-
-<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
-  We only send this when something you saved comes back in stock.
-</p>
-
-{{> foot}}
+{{> button href=viewWishlistLink label="View my wishlist"}}
+{{/layout}}

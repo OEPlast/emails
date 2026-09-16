@@ -1,50 +1,12 @@
-{{> head title="Your order has been delivered"}}
+{{#> layout title="Your order has been delivered"}}
+<h1 style="margin:0 0 12px 0; font-size:22px; line-height:30px;">Your order has arrived</h1>
+<p>Hi {{greetingName firstName}}, order <strong>{{orderNumber}}</strong> was delivered on {{formatDate deliveredAt}}{{#if deliveryAddress}} to {{deliveryAddress}}{{/if}}.</p>
 
-<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Your order has arrived</h1>
+{{> items items=products hidePrice=true}}
 
-<p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
-  Hi {{greetingName firstName}}, order <strong style="color:#1B1B1B;">{{orderNumber}}</strong> was delivered on
-  <strong style="color:#1B1B1B;">{{formatDate deliveredAt}}</strong>. We hope it is everything you expected.
-</p>
-
-<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin-bottom:20px;">
-  <tr>
-    <td style="padding:18px 20px;">
-      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-        {{> kv label="Order number" value=orderNumber}}
-        {{> kv label="Ordered" value=(formatDate purchaseDate)}}
-        {{> kv label="Delivered" value=(formatDate deliveredAt)}}
-        {{#if courierName}}{{> kv label="Courier" value=courierName}}{{/if}}
-        {{#if trackingNumber}}{{> kv label="Tracking number" value=trackingNumber}}{{/if}}
-        {{#if deliveryAddress}}{{> kv label="Delivered to" value=deliveryAddress}}{{/if}}
-      </table>
-    </td>
-  </tr>
-</table>
-
-<h2 style="margin:0 0 4px 0; font-size:17px; line-height:24px; font-weight:700; color:#1B1B1B;">
-  {{pluralize products.length "item"}} delivered
-</h2>
-{{> product-list items=products}}
-
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:20px;">
-  <tr><td>{{> button href=viewOrderLink label="View your order"}}</td></tr>
-</table>
+{{> button href=viewOrderLink label="View your order"}}
 
 {{#if startReturnLink}}
-<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin-top:20px;">
-  <tr>
-    <td style="padding:18px 20px;">
-      <p style="margin:0 0 8px 0; font-size:14px; line-height:22px; color:#475467;">
-        <strong style="color:#1B1B1B;">Something not right?</strong>
-        {{#if returnWindowDays}}You have {{returnWindowDays}} days from delivery to start a return.{{else}}You can start a return from your order page.{{/if}}
-      </p>
-      <p style="margin:0; font-size:14px; line-height:22px;">
-        <a href="{{startReturnLink}}" style="color:#6f9420; font-weight:600; text-decoration:underline;">Start a return</a>
-      </p>
-    </td>
-  </tr>
-</table>
+<p class="muted" style="font-size:13px; line-height:20px; color:#6b7280;">Something not right? {{#if returnWindowDays}}You have {{returnWindowDays}} days to <a href="{{startReturnLink}}" style="color:#6f9420;">start a return</a>.{{else}}<a href="{{startReturnLink}}" style="color:#6f9420;">Start a return</a> from your order page.{{/if}}</p>
 {{/if}}
-
-{{> foot}}
+{{/layout}}

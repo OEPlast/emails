@@ -13,7 +13,7 @@ export { Mailer, type MailerOptions, type MailerLogger } from './mailer';
 export { renderEmailTemplate, getAvailableTemplates } from './engine';
 export { buildSubject, isMarketingKind } from './subjects';
 export { buildText } from './text';
-export { getCdnUrl, getCdnBaseUrl, isCdnUrl, extractPathFromCdnUrl } from './cdn-url';
+export { getCdnUrl, getCdnBaseUrl, getEmailImageUrl, isCdnUrl, extractPathFromCdnUrl } from './cdn-url';
 export {
   formatToNaira,
   formatDateTime,

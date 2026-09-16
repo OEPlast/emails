@@ -1,38 +1,11 @@
-{{> head title="A discount code for you"}}
+{{#> layout title="A discount code for you"}}
+<h1 style="margin:0 0 12px 0; font-size:22px; line-height:30px;">{{discount}}% off your next order</h1>
+<p>Hi {{greetingName firstName}}, here's a code for {{pluralize productCount "product"}} at {{brand.storeName}}.</p>
 
-<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">{{discount}}% off your next order</h1>
-
-<p style="margin:0 0 20px 0; font-size:15px; line-height:24px; color:#475467;">
-  Hi {{greetingName firstName}}, here is a code you can use on {{pluralize productCount "product"}} across {{brand.storeName}}.
-</p>
-
-<table class="panel-accent" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f4f8ea; border:1px solid #dbe8bd; border-radius:12px; margin-bottom:20px;">
-  <tr>
-    <td align="center" style="padding:24px 16px;">
-      <p class="small" style="margin:0 0 8px 0; font-size:13px; line-height:18px; color:#667085; text-transform:uppercase; letter-spacing:1px;">Your code</p>
-      <div class="code" style="font-family:'SF Mono',Consolas,Menlo,monospace; font-size:28px; line-height:36px; font-weight:700; letter-spacing:4px; color:#1B1B1B; word-break:break-all;">{{couponCode}}</div>
-      <p class="small" style="margin:10px 0 0 0; font-size:13px; line-height:18px; color:#667085;">Valid until {{formatDateOnly expiryDate}}</p>
-    </td>
-  </tr>
-</table>
-
-<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin-bottom:20px;">
-  <tr>
-    <td style="padding:18px 20px;">
-      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-        {{> kv label="Discount" value=(concat discount "%")}}
-        {{#if minimumSpend}}{{> kv label="Minimum spend" value=(currency minimumSpend)}}{{/if}}
-        {{> kv label="Eligible products" value=(pluralize productCount "product")}}
-        {{> kv label="Expires" value=(formatDateOnly expiryDate)}}
-      </table>
-    </td>
-  </tr>
-</table>
+<p class="ink" style="margin:4px 0 6px 0; font-family:'SF Mono', Menlo, Consolas, monospace; font-size:26px; line-height:34px; font-weight:700; letter-spacing:3px; word-break:break-all; color:#1B1B1B;">{{couponCode}}</p>
+<p>Valid until {{formatDateOnly expiryDate}}{{#if minimumSpend}} on orders over {{currency minimumSpend}}{{/if}}.</p>
 
 {{> button href=useCouponLink label="Shop with this code"}}
 
-<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
-  Enter the code at checkout. One use per customer; cannot be combined with other offers.
-</p>
-
-{{> foot}}
+<p class="muted" style="font-size:13px; line-height:20px; color:#6b7280;">Enter the code at checkout. One use per customer.</p>
+{{/layout}}

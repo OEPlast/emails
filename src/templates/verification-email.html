@@ -1,18 +1,8 @@
-{{> head title="Verify your email"}}
-
-<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Confirm your email address</h1>
-
-<p style="margin:0 0 16px 0; font-size:15px; line-height:24px; color:#475467;">
-  Hi {{greetingName firstName}}, thanks for creating a {{brand.storeName}} account. Enter the code below to finish setting it up.
-</p>
+{{#> layout title="Verify your email"}}
+<h1 style="margin:0 0 12px 0; font-size:22px; line-height:30px;">Confirm your email</h1>
+<p>Hi {{greetingName firstName}}, enter this code to finish creating your {{brand.storeName}} account.</p>
 
 {{> otp code=otpCode expiresInMinutes=expiresInMinutes}}
 
-<p class="small" style="margin:0 0 6px 0; font-size:13px; line-height:20px; color:#667085;">
-  Never share this code. {{brand.storeName}} staff will not ask you for it.
-</p>
-<p class="small" style="margin:0; font-size:13px; line-height:20px; color:#667085;">
-  If you did not create an account, you can safely ignore this email.
-</p>
-
-{{> foot}}
+<p class="muted" style="font-size:13px; line-height:20px; color:#6b7280;">Didn't create an account? You can ignore this email. We'll never ask you for this code.</p>
+{{/layout}}

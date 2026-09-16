@@ -94,9 +94,9 @@ ls shared/emails/src/templates/*.html
 grep -rn "send('order-shipped'\|send(\"order-shipped\"" ../../Main-server/src ../../event-bus/src
 ```
 
-Shared chunks (header, footer, button, product list, shipping block) live in
-`src/templates/partials/*.hbs` and are pulled in with `{{> name}}`. Editing
-`partials/foot.hbs` changes the footer of all 18 emails at once.
+Shared chunks live in `src/templates/partials/*.hbs`: `layout` (head, logo and footer, used as
+`{{#> layout title="…"}} … {{/layout}}`), `button`, `items` (line items) and `otp`. Editing
+`partials/layout.hbs` changes the header and footer of all 18 emails at once.
 
 ---
 

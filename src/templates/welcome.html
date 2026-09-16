@@ -1,32 +1,6 @@
-{{> head title="Welcome"}}
-
-{{#if welcomeImageUrl}}
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:20px;">
-  <tr><td><img src="{{cdnUrl welcomeImageUrl}}" alt="" width="600" style="display:block; width:100%; max-width:100%; height:auto; border-radius:12px;"></td></tr>
-</table>
-{{/if}}
-
-<h1 style="margin:0 0 12px 0; font-size:24px; line-height:32px; font-weight:700; color:#1B1B1B;">Welcome to {{brand.storeName}}, {{greetingName firstName}}</h1>
-
-<p style="margin:0 0 16px 0; font-size:15px; line-height:24px; color:#475467;">
-  Your email is verified and your account is ready. You can now shop, track orders and manage returns from one place.
-</p>
-
-<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f8fafc; border:1px solid #e4e7ec; border-radius:12px; margin-bottom:20px;">
-  <tr>
-    <td style="padding:18px 20px;">
-      <p style="margin:0 0 10px 0; font-size:14px; line-height:22px; color:#475467;"><strong style="color:#1B1B1B;">Track every order.</strong> Follow each order from payment to delivery in your account.</p>
-      <p style="margin:0 0 10px 0; font-size:14px; line-height:22px; color:#475467;"><strong style="color:#1B1B1B;">Save what you like.</strong> Add items to your wishlist and we will tell you when they are back in stock.</p>
-      <p style="margin:0; font-size:14px; line-height:22px; color:#475467;"><strong style="color:#1B1B1B;">Straightforward returns.</strong> Start a return from your order page — no phone calls.</p>
-    </td>
-  </tr>
-</table>
+{{#> layout title="Welcome"}}
+<h1 style="margin:0 0 12px 0; font-size:22px; line-height:30px;">Welcome to {{brand.storeName}}, {{greetingName firstName}}</h1>
+<p>Your account is ready. Track your orders, save items to your wishlist and manage returns, all in one place.</p>
 
 {{> button href=startShoppingLink label="Start shopping"}}
-
-<p class="small" style="margin:16px 0 0 0; font-size:13px; line-height:20px; color:#667085;">
-  Need a hand? Reply to this email or write to
-  <a href="mailto:{{brand.supportEmail}}" style="color:#6f9420; text-decoration:none;">{{brand.supportEmail}}</a>.
-</p>
-
-{{> foot}}
+{{/layout}}

@@ -24,7 +24,8 @@ const OUT_DIR = path.join(__dirname, '..', '..', 'preview');
 const brand: EmailBrand = {
   storeName: 'Rawura',
   companyName: 'Rawura Stores Limited',
-  logoUrl: '',
+  // A real CDN logo, stored as WebP like uploads are, so the header and the PNG swap get exercised.
+  logoUrl: 'https://oeptest.b-cdn.net/settings/e459e984-257f-46e3-ab19-9534cefe5baa-1777476020852-771720161.webp',
   storefrontUrl: 'https://www.rawura.com',
   apiUrl: 'https://api.rawura.com',
   supportEmail: 'support@rawura.com',
@@ -97,14 +98,14 @@ function inspect(file: string, body: string, problems: Problem[]): void {
  * in the dark block, or carry a class that is.
  */
 const DARK_INK = /#(1B1B1B|1b1b1b|000000)\b/;
-const DARK_SAFE_TAGS = /^(h1|h2|h3|strong|b)$/;
-const DARK_SAFE_CLASSES = /\b(ink|kv-value|strong-figure|code|footer|a-warn)\b/;
+const DARK_SAFE_TAGS = /^(h1|strong)$/;
+const DARK_SAFE_CLASSES = /\b(ink|btn)\b/;
 
 function inspectDarkMode(file: string, html: string, problems: Problem[]): void {
   const tagRe = /<(\w+)([^>]*\bstyle="[^"]*")[^>]*>/g;
 
   for (const [, tag, attrs] of html.matchAll(tagRe)) {
-    // background-color:#1B1B1B is the footer's dark panel — correct, and not a text colour.
+    // Only the text `color` is checked; background colours are not text.
     const styleMatch = /style="([^"]*)"/.exec(attrs);
     const style = styleMatch?.[1] ?? '';
     const colour = /(^|;)\s*color:\s*([^;]+)/.exec(style)?.[2] ?? '';
