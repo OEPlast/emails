@@ -1,9 +1,0 @@
-{{!--
-  One label/value row. Stacked on a phone, two columns from 600px up.
-  Usage: {{> kv label="Order number" value=orderNumber}}
-         {{> kv label="Discount" value=(currency payment.discount) accent=true}}
---}}
-<tr>
-  <td class="kv-label" style="display:block; width:100%; padding:0 0 2px 0; font-size:13px; font-weight:500; color:{{#if accent}}#6f9420{{else}}#667085{{/if}};">{{label}}</td>
-  <td class="kv-value" style="display:block; width:100%; padding:0 0 14px 0; font-size:14px; font-weight:600; color:{{#if accent}}#6f9420{{else}}#1B1B1B{{/if}}; text-align:left;">{{value}}</td>
-</tr>
